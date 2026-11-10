@@ -34,7 +34,7 @@ python tools/prepare_private_artifacts.py
 Tidak ada input tambahan yang harus diambil dari server lama. Helper menggunakan `original_project/` sebagai default source. Jika ingin memulihkan langsung dari master ZIP pada Release, contoh berikut dijalankan pada folder yang menyimpan ZIP utama, bukan pada root repository:
 
 ```bash
-python -m zipfile -e 'FINAL PROJECT DSA COMPFEST 18.zip' .
+python -m zipfile -e 'FINAL.PROJECT.DSA.COMPFEST.18.zip' .
 python -m zipfile -e 'FINAL PROJECT DSA COMPFEST 18/v27-28.zip' 'FINAL PROJECT DSA COMPFEST 18/v27-28'
 ```
 

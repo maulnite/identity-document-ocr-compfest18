@@ -6,12 +6,20 @@
 |---|---|---|
 | [original_project/](../original_project/) | Semua 896 file hasil ekstraksi, total 407.964.518 bytes | SHA-256 per file di [archive_inventory.csv](archive_inventory.csv) |
 | [notebooks/](../notebooks/) | Final notebook yang dijalankan ulang dan retained EDA/ablation analytical outputs | Provenance di [Notebook guide](NOTEBOOKS.md) |
-| [Release archive-v1](https://github.com/maulnite/identity-document-ocr-compfest18/releases/tag/archive-v1) — `FINAL PROJECT DSA COMPFEST 18.zip` | Master ZIP asli, 386.952.264 bytes, tanpa repacking | SHA-256 di [release_checksums.sha256](release_checksums.sha256) |
+| [Release archive-v1](https://github.com/maulnite/identity-document-ocr-compfest18/releases/tag/archive-v1) — `FINAL.PROJECT.DSA.COMPFEST.18.zip` | Master ZIP asli, 386.952.264 bytes, tanpa repacking | SHA-256 di [release_checksums.sha256](release_checksums.sha256) |
 | Release archive-v1 — `reproduction_artifacts.zip` | Generated V24–V28 results, prepared frozen inputs/reference, notebook evidence, executed final notebook, logs, dan environment record | SHA-256 di [release_checksums.sha256](release_checksums.sha256) |
 
 `original_project/` mempertahankan relative paths dan bytes setiap file dari hasil ekstraksi, termasuk kedua nested ZIPs serta historical bytecode/checkpoints. Inventaris merinci semua file tanpa mengubah original data.
 
 Master ZIP ditempatkan sebagai Release asset agar repository menyimpan expanded content yang dapat ditelusuri sekaligus menyediakan arsip asli untuk diunduh. Snapshot reproduksi menyimpan hasil kerja lokal yang tidak seluruhnya ada dalam master ZIP.
+
+GitHub menormalisasi spasi pada nama master ZIP menjadi titik pada download asset. Isi ZIP tetap byte-identical dengan file asli `FINAL PROJECT DSA COMPFEST 18.zip`.
+
+## Hasil uji pemulihan
+
+Repository telah di-clone ulang dari GitHub ke folder baru. Seluruh 896 original file hashes cocok; preparation dari bundled originals, V27, V28, independent metric verification, dan seluruh 58 code cells notebook final berhasil dijalankan dari clone tersebut.
+
+Kedua ZIP Release telah diunduh ulang dan diperiksa SHA-256 serta ZIP CRC. Seluruh 98 snapshot member hashes juga cocok. Detail mesin tercatat di [backup_verification.json](backup_verification.json). Uji ini tidak menggunakan folder dataset asli atau working artifacts dari server lama sebagai input.
 
 ## Pemulihan dari clone
 
@@ -36,7 +44,7 @@ Unduh kedua ZIP serta checksum asset dari Release. Dari folder download:
 
 ```bash
 sha256sum -c release_checksums.sha256
-python -m zipfile -e 'FINAL PROJECT DSA COMPFEST 18.zip' .
+python -m zipfile -e 'FINAL.PROJECT.DSA.COMPFEST.18.zip' .
 python -m zipfile -e 'FINAL PROJECT DSA COMPFEST 18/v27-28.zip' 'FINAL PROJECT DSA COMPFEST 18/v27-28'
 ```
 

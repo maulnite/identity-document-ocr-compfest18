@@ -1,0 +1,54 @@
+{
+  "verified_at_utc": "2026-11-10T14:46:10.469553+00:00",
+  "verification": "passed",
+  "recovered_repo_commit": "d0bebbea437b8880b2da83754702c06dd1eefee6",
+  "original_archive": {
+    "files": 896,
+    "bytes": 407964518,
+    "all_sha256_match_on_fresh_github_clone": true
+  },
+  "fresh_clone_checks": {
+    "original_archive": {
+      "passed": true,
+      "duration_seconds": 0.55
+    },
+    "prepare": {
+      "passed": true,
+      "duration_seconds": 0.27
+    },
+    "v27": {
+      "passed": true,
+      "duration_seconds": 9.88
+    },
+    "v28": {
+      "passed": true,
+      "duration_seconds": 5.36
+    },
+    "metrics": {
+      "passed": true,
+      "duration_seconds": 1.11
+    },
+    "final_notebook": {
+      "passed": true,
+      "duration_seconds": 8.24
+    }
+  },
+  "downloaded_release_assets": [
+    {
+      "name": "FINAL.PROJECT.DSA.COMPFEST.18.zip",
+      "bytes": 386952264,
+      "sha256": "9bff69224730a099df2955643f4ed93e743ca444e882073e797ad7dc2e37017c",
+      "download_checksum_match": true,
+      "zip_crc_check": "passed"
+    },
+    {
+      "name": "reproduction_artifacts.zip",
+      "bytes": 29328092,
+      "sha256": "9624f53499ef65ca72d1d0664ff3661df1267c2b53803ab7e5f12630a7bb53c5",
+      "download_checksum_match": true,
+      "zip_crc_check": "passed"
+    }
+  ],
+  "snapshot_members_verified": 98,
+  "server_files_deleted": false
+}
