@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="480" viewBox="0 0 1440 480" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">Identity Document OCR — COMPFEST 18</title>
+  <desc id="description">Dokumen beragam, data terstruktur. Ilustrasi ekstraksi Name, Date of Birth, dan Address melalui OCR.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1440" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1426"/><stop offset="0.58" stop-color="#12223D"/><stop offset="1" stop-color="#123D4A"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="72" y1="350" x2="600" y2="350" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#65E1CD"/><stop offset="1" stop-color="#88A9FA"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="950" y1="90" x2="1190" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4F8FF"/><stop offset="1" stop-color="#DCE8F6"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" stroke="#A4D6EE" stroke-opacity="0.055"/>
+    </pattern>
+    <clipPath id="bounds"><rect width="1440" height="480" rx="24"/></clipPath>
+  </defs>
+  <g clip-path="url(#bounds)">
+    <rect width="1440" height="480" fill="url(#background)"/>
+    <rect width="1440" height="480" fill="url(#grid)"/>
+    <circle cx="1270" cy="230" r="280" fill="#39D6BC" fill-opacity="0.035"/>
+    <circle cx="1270" cy="230" r="212" stroke="#78D5D1" stroke-opacity="0.10"/>
+    <circle cx="1270" cy="230" r="154" stroke="#78D5D1" stroke-opacity="0.08"/>
+    <path d="M805 480L1000 0" stroke="#7ED7D3" stroke-opacity="0.10"/>
+    <rect x="72" y="54" width="158" height="30" rx="15" fill="#65E1CD" fill-opacity="0.10" stroke="#65E1CD" stroke-opacity="0.30"/>
+    <circle cx="91" cy="69" r="3.5" fill="#65E1CD"/>
+    <text x="105" y="74" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.7" fill="#A7F1E6">COMPFEST 18</text>
+    <text x="249" y="74" font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="2.1" fill="#9CB1CF">DATA SCIENCE ACADEMY</text>
+    <text x="69" y="174" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="700" letter-spacing="-2" fill="#F4F7FD">Dokumen beragam.</text>
+    <text x="69" y="250" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="700" letter-spacing="-2" fill="url(#accent)">Data terstruktur.</text>
+    <text x="73" y="294" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#B5C5DC">Quality-aware OCR. Evidence-driven extraction.</text>
+    <path d="M73 343H709" stroke="#8CA5CC" stroke-opacity="0.20"/>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.7" fill="#B8CAE1">
+      <text x="73" y="379">DETECT</text><text x="217" y="379">RECOGNIZE</text><text x="409" y="379">ROUTE</text><text x="546" y="379">EXTRACT</text>
+    </g>
+    <g stroke="#65E1CD" stroke-opacity="0.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M161 375H185M181 371L185 375L181 379"/><path d="M353 375H377M373 371L377 375L373 379"/><path d="M490 375H514M510 371L514 375L510 379"/>
+    </g>
+    <text x="73" y="434" font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="0.5" fill="#7F98BA">TEAM KETOLAK PACIL  /  IDENTITY DOCUMENT OCR</text>
+    <g transform="rotate(-6 1068 222)">
+      <rect x="934" y="83" width="258" height="294" rx="16" fill="#071321" fill-opacity="0.35"/>
+      <rect x="926" y="73" width="258" height="294" rx="16" fill="url(#paper)"/>
+      <rect x="948" y="98" width="36" height="5" rx="2.5" fill="#2F6484"/><rect x="992" y="98" width="80" height="5" rx="2.5" fill="#A0B8D0"/>
+      <text x="948" y="130" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="1.6" fill="#3F5978">IDENTITY DOCUMENT</text>
+      <rect x="948" y="151" width="64" height="79" rx="7" fill="#CAD9E9"/><circle cx="980" cy="176" r="11" fill="#A1B7CE"/>
+      <path d="M961 215C961 190 999 190 999 215" fill="#A1B7CE"/>
+      <rect x="1031" y="156" width="126" height="8" rx="4" fill="#829CB8"/><rect x="1031" y="179" width="91" height="6" rx="3" fill="#B0C2D5"/>
+      <rect x="1031" y="199" width="114" height="6" rx="3" fill="#B0C2D5"/><rect x="1031" y="219" width="75" height="6" rx="3" fill="#B0C2D5"/>
+      <rect x="948" y="252" width="208" height="6" rx="3" fill="#A1B7CE"/><rect x="948" y="270" width="180" height="6" rx="3" fill="#B0C2D5"/>
+      <rect x="948" y="312" width="208" height="27" rx="4" fill="#CFDDEB"/>
+      <g stroke="#627E9C" stroke-width="2" stroke-opacity="0.60">
+        <path d="M958 320V332M964 320V332M972 320V332M978 320V332M986 320V332M992 320V332M1000 320V332M1008 320V332M1014 320V332M1020 320V332M1028 320V332M1036 320V332M1042 320V332M1050 320V332M1058 320V332M1064 320V332M1072 320V332M1080 320V332M1086 320V332M1092 320V332M1100 320V332M1108 320V332M1114 320V332M1122 320V332M1130 320V332M1138 320V332M1146 320V332"/>
+      </g>
+      <rect x="1022" y="145" width="143" height="91" rx="6" stroke="#2FADAA" stroke-width="1.5" stroke-dasharray="5 4"/>
+    </g>
+    <path d="M1145 234C1218 234 1250 234 1250 274" stroke="#65E1CD" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <rect x="1097" y="264" width="263" height="162" rx="14" fill="#0C1E32" stroke="#78C9C8" stroke-opacity="0.40"/>
+    <path d="M1098 306H1359" stroke="#88A9C7" stroke-opacity="0.15"/><circle cx="1117" cy="285" r="3.5" fill="#65E1CD"/>
+    <text x="1130" y="289" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="1.7" fill="#A9E8DC">STRUCTURED FIELDS</text>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="10" letter-spacing="1.2" fill="#9CB2CE">
+      <text x="1118" y="330">NAME</text><text x="1118" y="362">DATE OF BIRTH</text><text x="1118" y="394">ADDRESS</text>
+    </g>
+    <g fill="#304A66"><rect x="1231" y="322" width="95" height="6" rx="3"/><rect x="1231" y="354" width="67" height="6" rx="3"/><rect x="1231" y="386" width="105" height="6" rx="3"/></g>
+    <path d="M890 112V80H918M1205 80H1233V112M890 350V382H918" stroke="#65E1CD" stroke-opacity="0.60" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
