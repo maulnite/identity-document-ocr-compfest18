@@ -1,0 +1,54 @@
+{
+  "scope": "Portugal/Spain fuzzy leave-one-out peer medoids",
+  "routes": {
+    "PORTUGAL_CITIZEN_CARD": {
+      "safe": true,
+      "candidate_documents": 17,
+      "calibration_baseline": {
+        "images": 6,
+        "exact_match": 0.0,
+        "mean_similarity": 0.5489795918367347
+      },
+      "calibration_candidate": {
+        "images": 6,
+        "exact_match": 0.0,
+        "mean_similarity": 0.6428571428571428
+      },
+      "validation_baseline": {
+        "images": 11,
+        "exact_match": 0.0,
+        "mean_similarity": 0.5198515769944341
+      },
+      "validation_candidate": {
+        "images": 11,
+        "exact_match": 0.0,
+        "mean_similarity": 0.6428571428571427
+      }
+    },
+    "SPAIN_ID": {
+      "safe": true,
+      "candidate_documents": 9,
+      "calibration_baseline": {
+        "images": 3,
+        "exact_match": 0.0,
+        "mean_similarity": 0.5722222222222222
+      },
+      "calibration_candidate": {
+        "images": 3,
+        "exact_match": 0.0,
+        "mean_similarity": 0.9166666666666667
+      },
+      "validation_baseline": {
+        "images": 6,
+        "exact_match": 0.0,
+        "mean_similarity": 0.5623456790123456
+      },
+      "validation_candidate": {
+        "images": 6,
+        "exact_match": 0.0,
+        "mean_similarity": 0.9166666666666664
+      }
+    }
+  },
+  "test_release_gate_passed": true
+}

@@ -1,0 +1,32 @@
+# Private identity data, original archives, and generated per-document outputs.
+data/private/**
+!data/private/.gitkeep
+pipeline/results/
+pipeline/results_v*/
+pipeline/reference_outputs/
+pipeline/reports/
+pipeline/cache*/
+*.parquet
+*.zip
+*.tar.gz
+*.tgz
+*.pdf
+*.xlsx
+*.jpg
+*.jpeg
+*.png
+!docs/assets/*.png
+# Notebook runs can write identity data and figures.
+**/pipeline_driven_eda/
+**/ocr_identity_similarity_ablation/
+**/kecolak_pacil_final_v2/
+**/_teammate_artifact/
+**/rectified_raw/
+**/outputs/
+**/.ipynb_checkpoints/
+**/__pycache__/
+*.py[cod]
+.venv*/
+.env
+.env.*
+.DS_Store
