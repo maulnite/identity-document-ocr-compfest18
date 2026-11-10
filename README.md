@@ -4,6 +4,10 @@
 
 Final Project **Data Science Academy COMPFEST 18**, tim **Ketolak Pacil**: Orie Abyan Maulana, Aditya Akbar, dan Khansa Firyal Adiila. Nama anggota mengikuti presentasi final; notebook asal menyingkat nama Khansa.
 
+**Arsip lengkap:** [seluruh original project](original_project/), termasuk dataset, PDF, executed notebooks, frozen outputs, dan nested ZIPs. [Release `archive-v1`](https://github.com/maulnite/identity-document-ocr-compfest18/releases/tag/archive-v1) menyediakan ZIP utama asli serta snapshot hasil reproduksi lokal. Lihat [panduan backup dan pemulihan](docs/BACKUP.md).
+
+**Notebook dengan output:** [Final project](notebooks/01_final_project.ipynb) · [Pipeline-driven EDA](notebooks/02_pipeline_driven_eda.ipynb) · [OCR identity ablation](notebooks/03_ocr_identity_ablation.ipynb). Final notebook dijalankan ulang saat verifikasi; EDA/ablation menampilkan retained outputs asal dengan provenance dijelaskan dalam [Notebook guide](docs/NOTEBOOKS.md).
+
 Proyek ini menggabungkan quality-aware preprocessing, hybrid OCR, evidence-driven routing, dan specialist field extraction untuk mendukung pengisian data identitas dalam workflow KYC. Repository mendokumentasikan metodologi, perjalanan eksperimen V3–V28, dan hasil akhir beserta batas interpretasinya.
 
 > **Ruang lingkup hasil:** V28 adalah downstream benchmark pada **632 labeled images**, menggunakan known label-derived identity groups untuk peer analysis. Angka ini belum mengukur generalisasi pada identitas baru. Reproduksi yang tersedia menggunakan frozen OCR artifacts; model weights dan runtime untuk full raw-image OCR tidak disertakan.
@@ -62,6 +66,7 @@ Repeated-capture linking dan downstream peer consensus dijelaskan sebagai develo
 | Menjalankan reproduksi lokal | [Reproducibility](docs/REPRODUCIBILITY.md) |
 | Menjalankan dan membandingkan notebook | [Notebook guide](docs/NOTEBOOKS.md) |
 | Memahami apa yang dipublikasikan | [Publication notes](docs/PUBLICATION.md) |
+| Mengunduh dan memulihkan arsip lengkap | [Backup dan pemulihan](docs/BACKUP.md) |
 
 ## Quick start
 
@@ -73,26 +78,27 @@ source .venv/bin/activate
 python -m pip install -r pipeline/requirements.txt
 ```
 
-Reproduksi membutuhkan **salinan lokal arsip proyek yang penggunaannya diizinkan**. Setelah ZIP utama dan `v27-28.zip` diekstrak sesuai [panduan](docs/REPRODUCIBILITY.md):
+Seluruh original inputs sudah tersedia di `original_project/`. Setelah clone lengkap:
 
 ```bash
-python tools/prepare_private_artifacts.py --source '/path/FINAL PROJECT DSA COMPFEST 18'
+python tools/prepare_private_artifacts.py
 python pipeline/run_v27.py
 python pipeline/run_v28.py
 python tools/verify_artifacts.py
 ```
 
-Pada clone public tanpa private artifacts, kode dan dokumentasi dapat dibaca, tetapi reproduksi prediksi membutuhkan artifacts tersebut. Final notebook mempunyai jalur reproduksi artifact analysis tersendiri, dijelaskan dalam [Notebook guide](docs/NOTEBOOKS.md).
+Tidak diperlukan folder sumber lain di server. Helper menyiapkan working copies dari `original_project/`. Final notebook mempunyai jalur reproduksi artifact analysis tersendiri, dijelaskan dalam [Notebook guide](docs/NOTEBOOKS.md).
 
 ## Struktur repository
 
 ```text
 docs/                  Dokumentasi, inventory arsip, dan source provenance
-notebooks/             Tiga notebook tanpa output dan embedded identity data
+notebooks/             Notebook final yang diverifikasi dan retained EDA/ablation outputs
+original_project/      Semua 896 file original, byte-identical dengan hasil ekstraksi
 pipeline/              Original source V3–V28, historical phases, dan portable core
 results/aggregate/     Metrik serta validation summaries tanpa per-person records
-tools/                 Persiapan private artifacts dan verifikasi metrik
-data/private/          Private evidence lokal; diabaikan Git
+tools/                 Persiapan working artifacts, verifikasi arsip, dan metrik
+data/private/          Working copies hasil preparation/run; diabaikan Git
 ```
 
 Kode historis dipertahankan untuk penelusuran. Sebagian memerlukan assets atau full core yang tidak ada dalam bundle portable; hanya downstream V24–V28 dan final artifact notebook yang menjadi jalur reproduksi ringan. Lihat [hasil verifikasi lokal](docs/VERIFICATION.md).

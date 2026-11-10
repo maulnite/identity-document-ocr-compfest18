@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Restore private frozen inputs from an authorized, extracted original archive.
+"""Restore frozen inputs from the complete original project archived in this repo.
 
 No OCR, package installation, network operation, or data upload is performed.
 """
@@ -26,13 +26,13 @@ def copy_identical_or_new(source: Path, target: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source', required=True, type=Path, help='Folder FINAL PROJECT DSA COMPFEST 18 yang telah diekstrak, termasuk v27-28.zip')
+    parser.add_argument('--source', type=Path, default=ROOT / 'original_project', help='Default: original_project/ dalam repository; dapat diarahkan ke ekstraksi lain')
     args = parser.parse_args()
     source = args.source.expanduser().resolve()
     bundle = source / 'v27-28/compfest/compfest_academy_project/V27_REPRODUCIBLE_BUNDLE'
     if not (bundle / 'run_v27.py').is_file():
         raise SystemExit('Ekstrak v27-28.zip ke subfolder v27-28/ terlebih dahulu (lihat docs/REPRODUCIBILITY.md).')
-    # Restore only private inputs and reference outputs; never replace public code.
+    # Restore working inputs and reference outputs; never replace source code.
     for folder in ['results', 'results_v3_stable', 'results_v17_per_layout_generic_mrz',
                    'results_v22_final_permit_ukraine_consensus', 'reference_outputs']:
         for path in sorted((bundle / folder).rglob('*')):
@@ -56,7 +56,7 @@ def main() -> None:
                     raise FileExistsError(f'Target berbeda: {dest}')
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 dest.write_bytes(payload)
-                print('Private frozen inputs dan notebook evidence siap. Tidak ada data di-upload.')
+                print('Frozen inputs dan notebook evidence siap dari original archive. Tidak ada upload tambahan.')
                 return
     raise SystemExit('Embedded evidence tidak ditemukan di notebook asal.')
 

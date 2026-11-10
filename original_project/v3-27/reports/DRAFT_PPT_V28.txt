@@ -1,0 +1,274 @@
+IDENTITY DOCUMENT OCR WITH SIAMESE IDENTITY LINKING
+AND LEAVE-ONE-OUT PEER CONSENSUS
+COMPfest Academy Project — Final checkpoint V28
+
+
+SLIDE 1 — JUDUL
+
+Identity Document OCR with Siamese Identity Linking and Peer Consensus
+
+- COMPfest Academy Project
+- Fokus: ekstraksi Name, Date of Birth, dan Address dari berbagai dokumen identitas
+- Final checkpoint: V28
+
+
+SLIDE 2 — PROBLEM STATEMENT
+
+OCR dokumen identitas sulit karena:
+
+- Banyak variasi layout dan negara dokumen.
+- Scan dapat buram, gelap, miring, terkena glare, atau memiliki teks kecil.
+- Satu identitas dapat memiliki beberapa scan dengan kualitas yang berbeda.
+- Sebagian dokumen tidak dapat dipetakan ke template parser yang sudah ada.
+
+Tujuan: meningkatkan OCR dengan memanfaatkan scan lain yang kemungkinan berasal dari identitas yang sama, tanpa menggunakan ground truth saat inferensi.
+
+
+SLIDE 3 — OBJECTIVE
+
+- Mengekstrak name, birth date, dan address.
+- Menggunakan OCR konvensional, bukan VLM.
+- Mengelompokkan dokumen yang kemungkinan berasal dari identitas sama.
+- Memperbaiki prediksi hanya jika terbukti aman pada calibration dan holdout.
+
+
+SLIDE 4 — BASE OCR PIPELINE
+
+Document image
+  → document localization & perspective correction
+  → preprocessing: raw / grayscale / CLAHE
+  → PP-OCRv6 Medium text detector
+  → SVTRv2 Server text recognizer
+  → document-family routing & field parser
+  → initial prediction: name, DOB, address
+
+- PP-OCRv6 Medium mendeteksi lokasi teks.
+- OpenOCR SVTRv2 Server membaca karakter.
+- Recognizer menggunakan GPU A100.
+- Detector menggunakan CPU karena kombinasi allocator CUDA sebelumnya tidak stabil.
+
+
+SLIDE 5 — IDENTITY LINKER: INPUT FEATURE
+
+Identity grouping tidak menggunakan DINO atau face embedding. Model saat ini membuat embedding dari representasi OCR dan metadata dokumen.
+
+Document representation:
+
+OCR text + prediksi name/DOB/address
+  → TF-IDF character n-gram 2–5
+  → Truncated SVD (maksimal 96 fitur)
+
+Ditambah fitur numerik:
+
+- OCR confidence dan jumlah OCR box
+- Ada/tidaknya name, DOB valid, dan address
+- Brightness, contrast, dan illumination
+- One-hot document family/layout
+
+
+SLIDE 6 — SIAMESE IDENTITY LINKER
+
+Feature vector
+  → Linear(input, 256) + LayerNorm + GELU + Dropout 10%
+  → Linear(256, 128) + GELU + Dropout 5%
+  → Linear(128, 64)
+  → L2-normalized embedding
+
+Output: embedding 64 dimensi per dokumen.
+
+Similarity antar-dokumen dihitung dengan cosine similarity:
+
+similarity(A, B) = embedding(A) · embedding(B)
+
+
+SLIDE 7 — TRAINING LINKER DAN CLUSTERING
+
+Training pair:
+
+- Positive pair: dua dokumen dari identitas yang sama.
+- Negative pair: dua dokumen dari identitas berbeda.
+- Hard negative: dokumen berbeda tetapi OCR text-nya mirip.
+
+Ground truth hanya digunakan untuk membuat label same/different identity saat training, bukan sebagai feature input atau nilai yang langsung disalin saat inferensi.
+
+Threshold cluster dipilih agar pair precision minimal 98.5%.
+
+Kemudian clustering memakai complete linkage:
+
+- Semua pasangan dalam satu cluster harus melewati threshold.
+- Jika dua dokumen memiliki DOB valid tetapi berbeda, mereka tidak boleh satu cluster.
+- Jika dua nama yang cukup panjang sangat berbeda, mereka juga tidak boleh satu cluster.
+- Data berlabel dan test dikelompokkan terpisah.
+
+
+SLIDE 8 — DARI IDENTITY GROUP KE LEAVE-ONE-OUT
+
+Contoh satu group:
+
+Group 17 = [image A, image B, image C, image D]
+
+Saat target adalah image A:
+
+Target A → peer yang boleh dipakai: B, C, D
+Target A → tidak boleh memakai prediksi A sendiri
+
+Saat target berubah menjadi B:
+
+Target B → peer yang boleh dipakai: A, C, D
+
+Ini disebut leave-one-out. Tujuannya agar model tidak mengonfirmasi prediksi target dengan prediksi target itu sendiri.
+
+
+SLIDE 9 — V28: GENERIC-ID PEER CONSENSUS
+
+V28 diterapkan hanya untuk Generic-ID yang masih memiliki UNKNOWN_ROUTE, yaitu dokumen yang belum berhasil dipetakan ke template parser.
+
+Name:
+
+- Ambil name prediction dari peer.
+- Minimal dua peer non-kosong.
+- Pilih fuzzy medoid: string peer yang paling konsisten terhadap peer lainnya.
+
+DOB:
+
+- Normalisasi tanggal peer ke format yang sama, misalnya 1999-03-12.
+- Minimal tiga peer dengan tanggal valid.
+- Pilih date medoid yang paling konsisten.
+
+Address tidak diubah karena evidence peer untuk Generic-ID terlalu sedikit.
+
+
+SLIDE 10 — CONTOH INTUISI V28
+
+Target image A:
+
+Name OCR = “MUH4MAD RID...”
+DOB OCR = kosong
+
+Peer B: “MUHAMAD RIDWAN”, 12/03/1999
+Peer C: “MUHAMMAD RIDWAN”, 1999-03-12
+Peer D: “MUHAMAD RIDWAN”, 12-03-1999
+
+Untuk target A:
+
+- Nama baru dipilih dari fuzzy medoid peer B, C, D.
+- DOB peer dinormalisasi dan memberi consensus 1999-03-12.
+- Target A tidak ikut memberi suara.
+
+Catatan: contoh ini hanya ilustrasi. Sistem tidak melihat ground truth saat memilih candidate.
+
+
+SLIDE 11 — VALIDATION GATE
+
+Pipeline tidak langsung mengganti semua prediksi.
+
+Calibration
+  → apakah consensus menghasilkan improvement?
+
+Holdout
+  → apakah improvement tetap tidak regresi pada data yang tidak dipakai untuk menentukan gate?
+
+V28 hanya dirilis jika:
+
+- Calibration memiliki minimal 20 dokumen.
+- Exact match tidak turun.
+- Calibration similarity naik minimal 4%.
+- Exact match dan similarity pada holdout tidak turun.
+
+
+SLIDE 12 — VALIDATION EVIDENCE V28
+
+Unknown Generic-ID: 147 labelled documents.
+
+Split:
+
+- 49 calibration documents
+- 98 holdout documents
+
+Name gate:
+
+- Calibration similarity: 19.62% → 29.70%
+- Holdout similarity: 18.77% → 27.48%
+- Exact match tidak regresi
+
+DOB gate:
+
+- Calibration EM: 12.24% → 16.33%
+- Holdout EM: 18.37% → 21.43%
+- Holdout similarity: 31.84% → 43.37%
+
+
+SLIDE 13 — BENCHMARK RESULT
+
+Metric | V27 | V28 | Improvement
+Name Exact Match | 46.20% | 46.20% | —
+DOB Exact Match | 69.62% | 70.41% | +0.79 pp
+Address Exact Match | 83.70% | 83.70% | —
+Macro Field EM | 66.51% | 66.77% | +0.26 pp
+Full Record Accuracy | 37.66% | 37.66% | —
+CER (lower is better) | 1.3581 | 1.3495 | Better
+Normalized Similarity | 79.70% | 81.28% | +1.58 pp
+
+Official test release tetap tidak ditimpa dan checksum-nya tetap identik.
+
+
+SLIDE 14 — GENERIC-ID RESULT DETAIL
+
+Unknown Generic-ID | V27 | V28
+Name Exact Match | 0.00% | 0.00%
+Name Similarity | 19.05% | 28.22%
+DOB Exact Match | 16.33% | 19.73%
+DOB Similarity | 29.93% | 41.16%
+
+Interpretasi:
+
+- Grouping membantu ketika satu scan buruk tetapi peer memiliki OCR yang lebih mendekati benar.
+- DOB lebih mudah diperbaiki karena memiliki struktur format yang jelas.
+- Nama tidak mencapai exact match karena OCR awal sering tidak menghasilkan karakter yang benar.
+
+
+SLIDE 15 — KENDALA UTAMA
+
+1. Unknown Generic-ID tidak memiliki template parser yang stabil.
+
+2. OCR error terjadi sebelum tahap grouping.
+
+- Dari 147 Generic-ID unknown, hanya 1 dokumen memiliki nama ground truth exact pada OCR line yang tersedia.
+- Artinya masalah utama bukan hanya memilih baris nama yang salah.
+
+3. Kualitas scan tidak konsisten.
+
+- Blur, darkness, glare, orientasi, dan perspektif.
+- Sebagian teks terlalu rusak bahkan untuk dibaca manual.
+
+4. Address sulit.
+
+- Hanya 112 dokumen beralamat pada ground truth.
+- Generic-ID address hanya 12 dokumen, terlalu sedikit untuk consensus yang aman.
+
+
+SLIDE 16 — LIMITATION DAN NEXT STEP
+
+V28 adalah improvement terbaik yang dapat dilakukan dari frozen OCR evidence.
+
+Untuk improvement besar berikutnya diperlukan:
+
+- Recover raw image dan OCR runtime dari backup.
+- Cluster layout Generic-ID berdasarkan visual template.
+- Deskew, perspective correction, CLAHE, dan targeted re-OCR per field.
+- OCR khusus MRZ dengan checksum ICAO.
+- Face crop sebagai tambahan identity feature bila tersedia, dengan fallback full-document embedding.
+- Template-specific parser untuk cluster Generic-ID terbesar.
+
+
+SLIDE 17 — CONCLUSION
+
+- V28 meningkatkan Macro Field EM menjadi 66.77%.
+- Normalized similarity meningkat menjadi 81.28%.
+- Metode terdiri dari dua tahap: Siamese identity linking → leave-one-out peer consensus.
+- Identity linker membentuk group yang konservatif; V28 memakai peer group untuk membantu scan yang kurang terbaca.
+- Bottleneck utama sekarang adalah template recognition dan character recognition untuk Generic-ID.
+
+Kalimat penutup:
+
+“Kami tidak langsung menyamakan semua dokumen yang mirip. Kami terlebih dahulu membentuk group dengan Siamese identity linker yang konservatif, lalu setiap target hanya menerima informasi dari peer lain melalui leave-one-out consensus. Metode ini meningkatkan kualitas OCR tanpa memakai ground truth saat inferensi.”

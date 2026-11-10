@@ -1,0 +1,2 @@
+# Preserve the archive byte-for-byte across platforms; retain original formatting.
+original_project/** -text -whitespace

@@ -1,0 +1,19 @@
+{
+  "Name EM": 0.4620253164556962,
+  "DOB EM": 0.7041139240506329,
+  "Address EM": 0.8370253164556962,
+  "Macro Field EM": 0.6677215189873418,
+  "Full Record Accuracy": 0.37658227848101267,
+  "CER": 1.3494826561936044,
+  "Normalized Edit Similarity": 0.8128289396267371,
+  "P50": 1261.8213426321745,
+  "P95": 2955.651668272912,
+  "Labeled N": 632,
+  "generic_unknown_name_peer_gate_safe": true,
+  "generic_unknown_dob_peer_gate_safe": true,
+  "generic_unknown_name_changes": 202,
+  "generic_unknown_dob_changes": 173,
+  "gpu_evidence_reused": true,
+  "test_release_gate_passed": true,
+  "official_submission_overwritten": false
+}

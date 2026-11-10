@@ -1,0 +1,181 @@
+IDENTITY DOCUMENT OCR WITH VISUAL IDENTITY GROUPING AND PEER CONSENSUS
+COMPfest Academy Project — Final checkpoint V28
+
+
+SLIDE 1 — JUDUL
+
+Identity Document OCR with Visual Identity Grouping and Peer Consensus
+
+- COMPfest Academy Project
+- Fokus: ekstraksi Nama, Tanggal Lahir, dan Alamat dari berbagai jenis identity card
+- Final checkpoint: V28
+
+
+SLIDE 2 — PROBLEM STATEMENT
+
+OCR dokumen identitas sulit karena:
+
+- Banyak variasi layout dan negara dokumen.
+- Scan dapat buram, gelap, miring, glare, atau memiliki teks kecil.
+- Satu identitas dapat memiliki beberapa scan dengan kualitas berbeda.
+- Sebagian dokumen sulit dibaca bahkan secara manual.
+
+Tujuan: meningkatkan akurasi OCR dengan memanfaatkan informasi antar-scan dari identitas yang sama.
+
+
+SLIDE 3 — OBJECTIVE
+
+- Mengekstrak name, date of birth, dan address.
+- Mempertahankan metode OCR konvensional, tanpa VLM.
+- Memakai grouping identitas untuk membantu scan yang tidak terbaca.
+- Setiap improvement harus lolos evaluasi calibration dan holdout.
+
+
+SLIDE 4 — BASE OCR PIPELINE
+
+Document image
+  → document localization & perspective correction
+  → preprocessing: raw / grayscale / CLAHE
+  → PP-OCRv6 Medium text detector
+  → SVTRv2 Server text recognizer
+  → document-family routing & field parser
+  → predictions: name, DOB, address
+
+- Detector: PP-OCRv6 Medium.
+- Recognizer: OpenOCR SVTRv2 Server.
+- Recognizer memanfaatkan GPU A100.
+- Detector tetap CPU karena kombinasi allocator CUDA sebelumnya tidak stabil.
+
+
+SLIDE 5 — CORE METHODOLOGY: IDENTITY GROUPING
+
+Multiple scans of one identity
+  → visual identity grouping
+  → peer OCR predictions
+  → leave-one-out consensus / fuzzy medoid
+  → replace prediction only if validation gate passes
+
+Prinsip penting:
+
+- Target image tidak boleh memakai prediksinya sendiri.
+- Ground truth hanya dipakai saat evaluasi, bukan saat inferensi.
+- Consensus hanya aktif jika peer support cukup.
+- Tujuannya bukan menebak dari label, tetapi memakai scan peer yang lebih terbaca.
+
+
+SLIDE 6 — IMPROVEMENT STAGES
+
+Stage | Method | Target
+V24 | Ukraine Latin-name peer consensus | Paspor Ukraina
+V25 | Format gate NO.12 → NO 12 | Alamat MyKad
+V26 | Random Forest name-span ranker berbasis geometri OCR | Nama MyKad
+V27 | Fuzzy leave-one-out medoid | Nama Portugal & Spanyol
+V28 | Peer medoid untuk Generic-ID tanpa template | Bottleneck Generic-ID
+
+Setiap stage hanya dirilis jika tidak regresi pada holdout.
+
+
+SLIDE 7 — V28: GENERIC-ID PEER CONSENSUS
+
+Masalah V28: terdapat 147 dokumen Generic-ID yang tidak berhasil dipetakan ke template/layout tertentu.
+
+Metode V28:
+
+- Name: fuzzy medoid dari minimal 2 peer identity.
+- DOB: medoid tanggal yang sudah dinormalisasi dari minimal 3 peer.
+- Address tidak diubah karena evidence peer terlalu sedikit.
+- Leave-one-out: target tidak ikut voting.
+- Validasi: 49 calibration documents dan 98 holdout documents.
+
+
+SLIDE 8 — BENCHMARK RESULT
+
+Metric | V27 | V28 | Improvement
+Name Exact Match | 46.20% | 46.20% | —
+DOB Exact Match | 69.62% | 70.41% | +0.79 pp
+Address Exact Match | 83.70% | 83.70% | —
+Macro Field EM | 66.51% | 66.77% | +0.26 pp
+Full Record Accuracy | 37.66% | 37.66% | —
+CER (lower is better) | 1.3581 | 1.3495 | Better
+Normalized Similarity | 79.70% | 81.28% | +1.58 pp
+
+Catatan: address exact global terlihat tinggi karena banyak dokumen memang tidak memiliki address pada ground truth.
+
+
+SLIDE 9 — GENERIC-ID RESULT DETAIL
+
+Unknown Generic-ID | V27 | V28
+Name Exact Match | 0.00% | 0.00%
+Name Similarity | 19.05% | 28.22%
+DOB Exact Match | 16.33% | 19.73%
+DOB Similarity | 29.93% | 41.16%
+
+Interpretasi:
+
+- Grouping berhasil memperbaiki karakter yang sebagian terbaca pada scan lain.
+- Perbaikan paling kuat terjadi di DOB karena format tanggal lebih terstruktur.
+- Exact name belum naik karena OCR dasar sering tidak menghasilkan karakter nama yang benar.
+
+
+SLIDE 10 — VALIDATION EVIDENCE
+
+Name gate:
+
+- Calibration similarity: 19.62% → 29.70%.
+- Holdout similarity: 18.77% → 27.48%.
+- Exact match tidak regresi.
+
+DOB gate:
+
+- Calibration EM: 12.24% → 16.33%.
+- Holdout EM: 18.37% → 21.43%.
+- Holdout similarity: 31.84% → 43.37%.
+
+Kesimpulan: improvement V28 konsisten pada calibration dan holdout, sehingga aman dirilis sebagai candidate improvement.
+
+
+SLIDE 11 — KENDALA UTAMA
+
+1. Unknown Generic-ID tidak memiliki template parser yang stabil.
+
+2. OCR error terjadi sebelum tahap grouping.
+
+- Dari 147 Generic-ID unknown, hanya 1 dokumen yang memiliki nama ground truth exact pada OCR line yang tersedia.
+- Artinya masalah utamanya bukan sekadar memilih OCR line yang salah.
+
+3. Kualitas scan tidak konsisten.
+
+- Blur, darkness, glare, orientasi, dan perspektif.
+- Sebagian teks terlalu rusak bahkan untuk dibaca manual.
+
+4. Address sulit.
+
+- Hanya 112 dokumen beralamat pada ground truth.
+- Generic-ID address hanya 12 dokumen, terlalu sedikit untuk consensus yang aman.
+
+
+SLIDE 12 — LIMITATION DAN NEXT STEP
+
+V28 adalah improvement terbaik yang bisa dilakukan dari frozen OCR evidence.
+
+Untuk improvement besar berikutnya diperlukan:
+
+- Recover raw image dan OCR runtime dari backup.
+- Cluster layout Generic-ID berdasarkan visual template.
+- Deskew, perspective correction, CLAHE, dan targeted re-OCR per field.
+- OCR khusus MRZ dengan checksum ICAO.
+- Face crop sebagai identity embedding bila wajah tersedia, dengan fallback full-document embedding.
+- Template-specific parser untuk cluster Generic-ID terbesar.
+
+
+SLIDE 13 — CONCLUSION
+
+- V28 meningkatkan Macro Field EM menjadi 66.77%.
+- Normalized similarity meningkat menjadi 81.28%.
+- Group-level consensus terbukti membantu dokumen dengan kualitas scan berbeda-beda.
+- Bottleneck utama sekarang adalah template recognition dan character recognition untuk Generic-ID.
+- Official test release tidak diubah dan checksum-nya tetap identik.
+
+Kalimat penutup:
+
+“Pendekatan grouping membantu ketika satu scan tidak terbaca, tetapi hasil audit menunjukkan bahwa Generic-ID membutuhkan perbaikan sebelum tahap consensus, yaitu template discovery dan targeted OCR dari gambar mentah.”

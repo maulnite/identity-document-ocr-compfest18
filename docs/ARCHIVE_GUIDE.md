@@ -23,7 +23,7 @@ ZIP utama: `FINAL PROJECT DSA COMPFEST 18.zip` (386.952.264 bytes). Arsip berisi
 
 Satu code cell notebook final menyimpan ZIP sebagai string `_BUNDLE_B64`. Bundle ini memuat **33 files**, dengan 10.005.812 bytes uncompressed: prediction tables, OCR tables, selected source, reports, development timeline, source inventory, tujuh visual examples, dan `MANIFEST.json` berisi hash untuk 32 artifacts.
 
-Notebook yang tampak mandiri tersebut sebenarnya melakukan artifact restoration dan analysis. Data tidak hilang hanya dengan menghapus output notebook: base64 di source juga perlu dipisahkan sebelum publikasi. Salinan GitHub membaca ZIP eksternal dari `data/private/embedded_evidence.zip`.
+Notebook yang tampak mandiri tersebut sebenarnya melakukan artifact restoration dan analysis. Original notebook beserta `_BUNDLE_B64` dipertahankan utuh di `original_project/output/`. Salinan yang disesuaikan di `notebooks/` membaca ZIP dari working copy `data/private/embedded_evidence.zip`; helper dapat memulihkannya dari original notebook dalam repository.
 
 ## `v3-27.zip`
 
@@ -31,7 +31,7 @@ Menyimpan 18 historical phase wrappers di `scripts/` beserta `_phase_runner.py`,
 
 Historical wrappers bergantung pada full implementation `identity_ocr_compfest18.py` dari workspace development. Portable core yang tersedia dalam ZIP kedua hanya mendukung final downstream chain. Menganggap seluruh phase wrappers langsung runnable akan menghasilkan panduan yang keliru.
 
-Python bytecode dan `.ipynb_checkpoints` adalah artifacts runtime; keduanya diinventarisasi tetapi tidak disalin ke GitHub.
+Python bytecode dan `.ipynb_checkpoints` adalah artifacts runtime. Semuanya dipertahankan dalam snapshot `original_project/` dan ZIP asli untuk kelengkapan arsip, meskipun tidak diperlukan untuk reproduction.
 
 ## `v27-28.zip`
 
@@ -55,7 +55,7 @@ Bundle juga menyimpan V28 released/candidate outputs, validation summaries, audi
 
 Presentasi menghubungkan business problem, EDA, core architecture, contoh field traceability, validation, bottleneck, dan deployment recommendations. Appendix memuat label distribution, quality audit, routing, preprocessing, OCR transcript, split diagnostics, metric formulas, runtime configuration, Unknown Route, serta pemilihan OCR engines. Sebagian appendix berupa gambar; text extraction saja tidak mewakili seluruh visual isinya.
 
-PDF dan original executed notebooks tetap tersedia dalam ekstraksi lokal. Repository public memuat ringkasan dan source yang dibersihkan karena dokumen tersebut membawa contoh identitas dan/atau OCR transcript.
+Seluruh PDF, raw dataset, original executed notebooks, dan nested ZIPs tersedia dalam `original_project/` pada repository public. Contoh identitas dan OCR transcripts di dalam materi asli ikut dipertahankan. ZIP utama byte-identical juga tersedia melalui Release `archive-v1`.
 
 ## Penelusuran file
 

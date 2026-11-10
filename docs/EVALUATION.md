@@ -4,7 +4,7 @@
 
 Metrik final berasal dari released prediction tables yang memuat 732 records. Hanya **632 rows dengan `has_ground_truth=True`** yang masuk evaluation. Sebanyak 100 test rows memiliki provenance release terpisah; tidak tersedia ground truth atau leaderboard score untuk mereka di arsip.
 
-Public copies tersedia di [results/aggregate](../results/aggregate/). Nilai per-person, OCR transcripts, dan predictions tetap lokal.
+Aggregate copies tersedia di [results/aggregate](../results/aggregate/). Nilai per-person, OCR transcripts, dan frozen predictions juga dipertahankan dalam [original project](../original_project/v27-28/compfest/compfest_academy_project/V27_REPRODUCIBLE_BUNDLE/).
 
 ## Normalisasi dan formula
 

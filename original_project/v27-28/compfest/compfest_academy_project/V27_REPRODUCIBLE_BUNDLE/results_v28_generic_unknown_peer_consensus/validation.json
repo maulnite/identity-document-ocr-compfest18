@@ -1,0 +1,56 @@
+{
+  "scope": "Unknown Generic-ID only; leave-one-out visual-identity peer medoids",
+  "labelled_unknown_documents": 147,
+  "unknown_documents_all_splits": 237,
+  "calibration_documents": 49,
+  "validation_documents": 98,
+  "name_gate": {
+    "min_peers": 2,
+    "safe": true,
+    "calibration_baseline": {
+      "images": 49,
+      "exact_match": 0.0,
+      "mean_similarity": 0.1962027145042414
+    },
+    "calibration_candidate": {
+      "images": 49,
+      "exact_match": 0.0,
+      "mean_similarity": 0.2969937667794282
+    },
+    "validation_baseline": {
+      "images": 98,
+      "exact_match": 0.0,
+      "mean_similarity": 0.1876955437043204
+    },
+    "validation_candidate": {
+      "images": 98,
+      "exact_match": 0.0,
+      "mean_similarity": 0.2747748169683054
+    }
+  },
+  "dob_gate": {
+    "min_peers": 3,
+    "safe": true,
+    "calibration_baseline": {
+      "images": 49,
+      "exact_match": 0.12244897959183673,
+      "mean_similarity": 0.26122448979591834
+    },
+    "calibration_candidate": {
+      "images": 49,
+      "exact_match": 0.16326530612244897,
+      "mean_similarity": 0.3673469387755101
+    },
+    "validation_baseline": {
+      "images": 98,
+      "exact_match": 0.1836734693877551,
+      "mean_similarity": 0.31836734693877555
+    },
+    "validation_candidate": {
+      "images": 98,
+      "exact_match": 0.21428571428571427,
+      "mean_similarity": 0.4336734693877552
+    }
+  },
+  "test_release_gate_passed": true
+}

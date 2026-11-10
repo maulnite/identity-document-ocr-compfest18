@@ -15,7 +15,8 @@ Verifikasi dilakukan pada **10 November 2026** dalam virtual environment proyek 
 | Final public notebook, seluruh 58 code cells | PASS; dijalankan dari external private evidence ZIP |
 | Public notebook format | PASS; ketiga notebook valid menurut nbformat |
 | Source syntax | PASS; historical Python source dan code cells ketiga public notebooks dapat di-parse |
-| Public notebook outputs/attachments/embedded identity bundle | Tidak disertakan |
+| Public notebook outputs | Final execution serta retained EDA/ablation analytical outputs disertakan |
+| Complete original material | Diarsipkan byte-identical di `original_project/`; lihat [Backup](BACKUP.md) |
 
 Notebook execution pertama mengungkap missing optional dependency Jinja2 untuk pandas Styler. Dependency tersebut ditambahkan ke `requirements-notebooks.txt`; execution berikutnya berhasil. Tidak ada shared package yang diganti.
 

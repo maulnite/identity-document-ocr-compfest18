@@ -1,4 +1,4 @@
-# Private identity data, original archives, and generated per-document outputs.
+# Transient run copies; complete original material is tracked in original_project/.
 data/private/**
 !data/private/.gitkeep
 pipeline/results/
@@ -30,3 +30,6 @@ pipeline/cache*/
 .env
 .env.*
 .DS_Store
+# Preserve the full original archive contents, including nested archives/bytecode.
+!original_project/
+!original_project/**

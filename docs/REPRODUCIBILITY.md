@@ -23,9 +23,15 @@ python -m pip install -r pipeline/requirements.txt
 
 Tidak perlu memasang PyTorch, PaddleOCR, atau OpenCV untuk V27/V28 downstream chain. Jangan mengganti packages shared environment untuk mengikuti notebook historical.
 
-## 2. Ekstraksi private source
+## 2. Sumber lengkap dalam repository
 
-Gunakan arsip asli yang akses dan penggunaannya diizinkan. Contoh berikut dijalankan pada folder yang menyimpan ZIP utama, bukan pada root repository:
+Clone repository sudah menyediakan `original_project/` lengkap. Dari root repository, jalankan:
+
+```bash
+python tools/prepare_private_artifacts.py
+```
+
+Tidak ada input tambahan yang harus diambil dari server lama. Helper menggunakan `original_project/` sebagai default source. Jika ingin memulihkan langsung dari master ZIP pada Release, contoh berikut dijalankan pada folder yang menyimpan ZIP utama, bukan pada root repository:
 
 ```bash
 python -m zipfile -e 'FINAL PROJECT DSA COMPFEST 18.zip' .
@@ -40,7 +46,7 @@ Kembali ke root repository:
 python tools/prepare_private_artifacts.py --source '/absolute/path/FINAL PROJECT DSA COMPFEST 18'
 ```
 
-Helper menyalin private input/reference tables ke lokasi yang diabaikan Git dan mengambil embedded ZIP dari original final notebook menggunakan AST literal parsing. Original notebook source tidak dieksekusi. Helper tidak menimpa file berbeda, tidak mengunduh models, dan tidak melakukan upload.
+Helper menyalin input/reference tables ke working locations yang diabaikan Git dan mengambil embedded ZIP dari original final notebook menggunakan AST literal parsing. Original notebook source tidak dieksekusi. Helper tidak menimpa file berbeda, tidak mengunduh models, dan tidak melakukan upload. Nama script/folder `private` berasal dari packaging awal; seluruh original inputs sekarang tersedia di repository.
 
 ## 3. Reproduksi V27
 
@@ -88,7 +94,7 @@ Siapkan private artifacts dan jalankan V28 agar released result tersedia, lalu p
 export OCR_DATASET_DIR='/absolute/path/FINAL PROJECT DSA COMPFEST 18/dataset'
 ```
 
-Jalankan `notebooks/02_pipeline_driven_eda.ipynb`. Ia memakai `ground_truth.xlsx` dan raw images serta V28 table. Discovery dibatasi ke explicit dataset path, `pipeline/`, dan `data/private/`. Generated `pipeline_driven_eda/` diabaikan Git karena dapat berisi identity examples.
+Jalankan `notebooks/02_pipeline_driven_eda.ipynb`. Ia memakai `ground_truth.xlsx` dan raw images serta V28 table. Default discovery mencakup `original_project/dataset/`, `pipeline/`, dan `data/private/`; explicit dataset path dapat dipakai untuk sumber lain. Generated `pipeline_driven_eda/` diabaikan Git sebagai working output.
 
 Notebook EDA lengkap belum dijalankan ulang dalam verifikasi dokumentasi ini; source syntax dan notebook structure diperiksa. Full EDA tetap memerlukan image-quality computation pada 732 images.
 
@@ -110,4 +116,4 @@ Ablation tidak dijalankan ulang di sini. Angka pada [Experiments](EXPERIMENTS.md
 | Raw OCR unavailable pada historical script | Portable core tidak menyediakan full development API |
 | Ground truth CSV terlihat banyak missing fields | Gunakan unwrapping pada [Dataset](DATASET.md) atau normalized frozen labels |
 | EDA tidak menemukan images | Set `OCR_DATASET_DIR` ke dataset asli |
-| Notebook public tidak menampilkan executed outputs | Outputs sengaja dihapus; hasil agregat tersedia di docs dan `results/aggregate/` |
+| Preview notebook besar tidak tersedia | Unduh `.ipynb` dari repository atau Release dan buka di Jupyter; executed outputs tersimpan dalam file |

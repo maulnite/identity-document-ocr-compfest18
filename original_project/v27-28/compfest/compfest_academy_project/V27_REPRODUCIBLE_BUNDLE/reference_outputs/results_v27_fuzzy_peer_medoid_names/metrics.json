@@ -1,0 +1,19 @@
+{
+  "Name EM": 0.4620253164556962,
+  "DOB EM": 0.6962025316455697,
+  "Address EM": 0.8370253164556962,
+  "Macro Field EM": 0.6650843881856541,
+  "Full Record Accuracy": 0.37658227848101267,
+  "CER": 1.3580734270819368,
+  "Normalized Edit Similarity": 0.7970206430331956,
+  "P50": 1261.8213426321745,
+  "P95": 2955.651668272912,
+  "Labeled N": 632,
+  "fuzzy_medoid_safe_routes": 2,
+  "address_present_documents": 112,
+  "address_present_exact_match": 0.25,
+  "address_present_similarity": 0.8692761684708366,
+  "gpu_evidence_reused": true,
+  "test_release_gate_passed": true,
+  "official_submission_overwritten": false
+}

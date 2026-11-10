@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Execute the final artifact notebook with this interpreter; keep outputs private."""
+"""Execute the final artifact notebook with this interpreter; save a working copy."""
 from pathlib import Path
 import sys
 
